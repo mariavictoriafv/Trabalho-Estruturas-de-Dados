@@ -32,7 +32,7 @@ int main() {
 				int num, numMax, minerCode;
 				std::cin>>num>>numMax>>minerCode;
 				//Criamos o vetor de transacoes
-				newTransactions list[num]={};
+				newTransactions list[num];
 				
 				//So vamos ler as transacoes se existirem transacoes
 				if(num!=0 && numMax!=0){
@@ -40,15 +40,15 @@ int main() {
 					for(int i=0; i<num; i++){
 						cin>>list[i].de;
 						cin>>list[i].para;
-						cin>>list[i].taxa;
 						cin>>list[i].valor;
+						cin>>list[i].taxa;
 					}
 				}
 
 				//Criamos o bloco e o colocamos na Blockchain
 				MyBlockchain.createNewBlock(num, numMax, minerCode, list);
 			}
-			else if(type=="imprimeBlockchain") MyBlockchain.printBlockchain();	
+			//else if(type=="imprimeBlockchain") MyBlockchain.printBlockchain();	
 			else if(type=="imprimeSaldo"){
 				int b;
 				std::cin>>b;

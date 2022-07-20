@@ -48,8 +48,8 @@ void Blockchain::createNewBlock(int numTransactions, int maxTransactios, int min
     
     //Inserimos as transacoes ate atingirmos o limite
     if(numTransactions!=0 && maxTransactios!=0){
-        for(int k=0; k<maxTransactios || k<numTransactions; k++){
-            lastBlock->addTransaction(infos[k].de, infos[k].para, infos[k].taxa, infos[k].valor);
+        for(int k=0; k<numTransactions && k<maxTransactios; k++){
+            lastBlock->addTransaction(infos[k].de, infos[k].para, infos[k].valor, infos[k].taxa);
         }
     }
 
@@ -60,11 +60,10 @@ void Blockchain::createNewBlock(int numTransactions, int maxTransactios, int min
 
 //Merge sort para ordenar as transacoes
 void Blockchain::mergesortTransactions(newTransactions *vetor, int beg, int end){
-    int middle; //variavel para receber o meio do array
 
     if(beg==end) return; //so ordenamos o vetor se ele tiver mais de uma transacao
     else if(beg<end-1){ //vamos ordenador o vetor enquanto o inicio for menor que o fim
-        middle=(beg+end)/2; //definimos o valor do meio do vetor
+        int middle=(beg+end)/2; //definimos o valor do meio do vetor
         mergesortTransactions(vetor, beg, middle); //ordenamos a primeira metade do vetor
         mergesortTransactions(vetor, middle, end); //ordenamos a segunda metade do vetor
         mergeTransactions(vetor, beg, middle, end); //unimos as partes ordenadas
@@ -89,7 +88,9 @@ void Blockchain::mergeTransactions(newTransactions *vetor, int beg, int middle, 
     //Usamos apenas o intervalo indicado por it1 e it2
     while(it1<middle && it2<end){
         //Colocamos a transacao de maior taxa antes, ou o que foi inserida primeiro
+        std::cout<<it1<<"-"<<it2<<"\n";
         if(vetor[it1].taxa>=vetor[it2].taxa){
+            //std::cout<<vetor[it1].taxa<<"-"<<vetor[it2]<<"\n";
             newVetor[it3]=vetor[it1];
             it3++;
             it1++;
@@ -115,7 +116,12 @@ void Blockchain::mergeTransactions(newTransactions *vetor, int beg, int middle, 
     }
 
     //Copiamos o vetor auxiliar para o vetor original
-    for(int i=0; i<size; i++) vetor[i+beg]=newVetor[i];
+    for(int i=0; i<size; i++) {
+        vetor[i+beg]=newVetor[i];
+        //std::cout<<i+beg<<"-"<<vetor[i+beg].taxa<<"-"<<newVetor[i].taxa<<"\n";
+    }
+    //std::cout<<"-------------------\n";
+
 }
 
 void Blockchain::printBlockchain(){
