@@ -83,7 +83,7 @@ void Block::destroyBlock(){
     }
 }
 
-void Block::addTransaction(const int a, const int b,const int valor,const int taxa){
+void Block::addTransaction(const int a=0, const int b=0,const int valor=0,const int taxa=0){
     //os valores nao podem ser negativos
     if(a>=0 && b>=0 && valor>=0 && taxa>=0){
         //caso a transacao a ser adicionada seja a primeira da lista

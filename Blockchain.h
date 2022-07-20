@@ -28,10 +28,12 @@ class Blockchain{
     void destroyBlockchain();
 
     private:
-    //funcao para ordenar as transacoes com base na taxa
-    void mergesortTransactions(newTransactions *vetor, int beg, int end);
-    //funcao para fazer o merge
-    void mergeTransactions(newTransactions *vetor, int beg, int middle, int end);
+    //Funcao que vai chamar o metodo de ordenacao
+    void mergeSort(newTransactions v[], int n);
+    //Funcao para ordenar as transacoes com base na taxa
+    void mergeSort(newTransactions v[], int p, int r,newTransactions aux[]) ;
+    //Funcao para juntar as partes ordenadas
+    void merge(newTransactions v[], int p, int q, int r,newTransactions aux[]);
 
     Block *firstBlock; //apontador para o primeiro bloco
     Block *lastBlock; //apontador para o ultimo block
