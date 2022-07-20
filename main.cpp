@@ -35,7 +35,6 @@ int main() {
 				newTransactions *list = new newTransactions[num];
 				
 				//So vamos ler as transacoes se existirem transacoes
-				// if(num!=0 && numMax!=0){
 					//Lendo as informacoes das transacoes
 					for(int i=0; i<num; i++){
 						cin>>list[i].de;
@@ -43,17 +42,23 @@ int main() {
 						cin>>list[i].valor;
 						cin>>list[i].taxa;
 					}
-				// }
 
 				//Criamos o bloco e o colocamos na Blockchain
 				MyBlockchain.createNewBlock(num, numMax, minerCode, list);
 				delete[] list;
 			}
-			else if(type=="imprimeBlockchain") MyBlockchain.printBlockchain();	
+			else if(type=="imprimeBlockchain"){
+				MyBlockchain.printBlockchain();
+			} 	
 			else if(type=="imprimeSaldo"){
 				int b;
 				std::cin>>b;
 				
+			}
+			else if(type=="alteraTransacao"){
+				int posB, posT, newD, newPara, newValor, newTaxa;
+				std::cin>>posB>>posT>>newD>>newPara>>newValor>>newTaxa;
+				MyBlockchain.changeTransaction(posB, posT, newD, newPara, newValor, newTaxa);
 			}
 		}
 	} 

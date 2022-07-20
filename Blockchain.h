@@ -22,6 +22,8 @@ class Blockchain{
     void createNewBlock(int numTransactions, int maxTransactios, int minerCode, newTransactions *infos);
     //Funcao para imprimir a Blockchain toda
     void printBlockchain();
+    //Funcao para alterar uma transacao
+    void changeTransaction(int pos_B, int pos_T, int new_De, int new_Para, int new_Valor, int new_Taxa);
     //Funcao para calcular e imprimir o saldo
     void printTotal(int b);
     //Funcoes auxiliares

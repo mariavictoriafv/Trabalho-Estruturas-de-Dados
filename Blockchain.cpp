@@ -169,3 +169,31 @@ void Blockchain::printBlockchain(){
 
     std::cout<<"\n=====================\n"; 
 }
+
+void Blockchain::changeTransaction(int pos_B, int pos_T, int new_De, int new_Para, int new_Valor, int new_Taxa){
+    //Se a blockchain estiver vazio, nao alteramos nada
+    if(firstBlock==nullptr) return;
+    
+    //Auxiliar para percorrer os blocos
+    Block *aux=firstBlock;
+
+    //Procuramos o bloco onde esta a transacao
+    while(aux->pos!=pos_B) aux=aux->nextBlock;
+
+    //Se o bloco estiver vazio, nao alteramos nada
+    if(aux->listaFirst==nullptr) return;
+
+    //Agora devemos encontrar a transacao que precisa ser mudada
+    Transaction *copy=aux->listaFirst;
+
+    for(int c=1; c<pos_T; c++) copy=copy->nextT;
+
+    //Alteramos as informacoes
+    copy->de=new_De;
+    copy->para=new_Para;
+    copy->valor=new_Valor;
+    copy->taxa=new_Taxa;
+
+    //Mineramos o bloco
+    aux->mineBlock(false);
+}
