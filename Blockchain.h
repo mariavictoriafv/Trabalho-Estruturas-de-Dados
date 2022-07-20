@@ -29,11 +29,11 @@ class Blockchain{
 
     private:
     //Funcao que vai chamar o metodo de ordenacao
-    void mergeSort(newTransactions v[], int n);
+    void orderTransactions(newTransactions *values, int num_);
     //Funcao para ordenar as transacoes com base na taxa
-    void mergeSort(newTransactions v[], int p, int r,newTransactions aux[]) ;
+    void mergeSortTransactions(newTransactions *values, int beg, int end, newTransactions *aux) ;
     //Funcao para juntar as partes ordenadas
-    void merge(newTransactions v[], int p, int q, int r,newTransactions aux[]);
+    void mergeTransactions(newTransactions *values, int beg, int half, int end, newTransactions *aux);
 
     Block *firstBlock; //apontador para o primeiro bloco
     Block *lastBlock; //apontador para o ultimo block

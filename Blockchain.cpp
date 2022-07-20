@@ -25,10 +25,11 @@ void Blockchain::destroyBlockchain(){
 void Blockchain::createNewBlock(int numTransactions, int maxTransactios, int minerCode, newTransactions *infos){
     if(numTransactions!=0 && maxTransactios!=0){
         //ordenando o vetor por meio de um merge sort recursivo, porque e um algoritmo estavel
-       mergeSort(infos,numTransactions);
+       orderTransactions(infos, numTransactions);
     }
     
     //Criamos um novo bloco, para receber as transacoes
+
     //Caso especial: primeiro bloco da lista
     int _pos, _prevHash;
     if(firstBlock==nullptr){
@@ -47,51 +48,78 @@ void Blockchain::createNewBlock(int numTransactions, int maxTransactios, int min
     }   
     
     //Inserimos as transacoes ate atingirmos o limite
-    // if(numTransactions!=0 && maxTransactios!=0){
         for(int k=0; k<numTransactions && k<maxTransactios; k++){
             lastBlock->addTransaction(infos[k].de, infos[k].para, infos[k].valor, infos[k].taxa);
         }
-    // }
 
     //Mineramos o bloco, sem imprimir nenhuma informacao
     lastBlock->mineBlock(false);
-    
 }
 
-void Blockchain::mergeSort(newTransactions *v, int p, int r,newTransactions *aux){
-    if (p < r-1) {
-        int meio = (p+r) / 2;
-        mergeSort(v, p, meio,aux);
-        mergeSort(v, meio, r,aux);
-        merge(v, p, meio, r, aux); 
+void Blockchain::mergeSortTransactions(newTransactions *values, int beg, int end, newTransactions *aux){
+    
+    if(beg==end) return; //so ordenamos o vetor se ele tiver mais de uma transacao    
+    else if(beg<end-1){ //vamos ordenador o vetor enquanto o inicio for menor que o fim
+        int middle = (beg+end) / 2; //definimos o valor do meio do vetor
+        mergeSortTransactions(values, beg, middle, aux); //ordenamos a primeira metade do vetor
+        mergeSortTransactions(values, middle, end, aux); //ordenamos a segunda metade do vetor
+        mergeTransactions(values, beg, middle, end, aux); //unimos as partes ordenadas
     }
 }
 
 
-void Blockchain::mergeSort(newTransactions *v, int n){
-    newTransactions *aux = new newTransactions[n];
-    mergeSort(v, 0, n,aux);
+void Blockchain::orderTransactions(newTransactions *values, int num_){
+    //Como essa implementacao do merge nao e in-place, criaamos um auxiliar 
+    newTransactions *aux = new newTransactions[num_];
+    //Chamamos a funcao de merge sort
+    mergeSortTransactions(values, 0, num_, aux);
+    //Depois de ordenar e colocar as informacoes no vetor original,
+    //Deletamos o vetor que foi alocado
     delete[] aux;
 }
 
 //Funcao de merge para o Merge sort
-void Blockchain::merge(newTransactions *v, int p, int q, int r,newTransactions *aux){
-    int tam = r-p;
-    int i = p; //cursor 1
-    int j = q; //cursor 2
-    int k = 0; //cursor para aux
-    while(i < q && j < r) {
-        if (v[i].taxa >= v[j].taxa)
-            aux[k++] = v[i++];
-        else
-            aux[k++] = v[j++];
+void Blockchain::mergeTransactions(newTransactions *values, int beg, int half, int end, newTransactions *aux){
+   //para percorrer as posicoes, usaremos iteradores do tipo int, pois é um vetor
+    int i=beg; 
+    int j=half; 
+    int k=0; 
+
+    //agora precisamos saber o tamanho do vetor 
+    int tam = end-beg;
+
+     //Vamos preencher o vetor auxiliar com as informacoes do vetor original
+    //Ou seja, enquanto o final for maior que o inicio e o meio for maior que o inicio
+    //Usamos apenas o intervalo indicado por i e j
+    while(i<half && j<end) {
+        //Colocamos a transacao de maior taxa antes, ou o que foi inserida primeiro
+        if(values[i].taxa>=values[j].taxa){
+            aux[k] = values[i];
+            k++;
+            i++;
+        }
+        else{
+            aux[k] = values[j];
+            k++;
+            j++;
+        }           
     }
-    while(i < q)
-        aux[k++] = v[i++];
-    while(j < r)
-        aux[k++] = v[j++];
-    for(k = 0; k < tam; k++)
-        v[p+k] = aux[k];    
+
+    //Agora copiamos o resto do vetor original para o vetor auxiliar
+    //Consideramos cada metade
+    while(i<half){
+        aux[k] = values[i];
+        k++;
+        i++;
+    }       
+    while(j<end){
+        aux[k] = values[j];
+        k++;
+        j++;
+    }
+        
+     //Copiamos o vetor auxiliar para o vetor original
+    for(k=0; k<tam; k++) values[beg+k]=aux[k];    
 }
 
 void Blockchain::printBlockchain(){
