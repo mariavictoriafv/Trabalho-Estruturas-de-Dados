@@ -14,23 +14,25 @@ struct newTransactions{
 
 
 class Blockchain{
-    public:
+    typedef iterator TransactionIterator;
+
+public:
     //Construtor sem argumentos
     Blockchain();
     //Destrutor
     ~Blockchain();
     //Funcao que cria um novo bloco
-    void createNewBlock(int numTransactions, int maxTransactios, int minerCode, newTransactions *infos);
+    void createNewBlock(const int numTransactions, const int maxTransactios, const int minerCode, newTransactions *infos);
     //Funcao para imprimir a Blockchain toda
     void printBlockchain();
     //Funcao para alterar uma transacao
-    void changeTransaction(int pos_B, int pos_T, int new_De, int new_Para, int new_Valor, int new_Taxa);
+    void changeTransaction(const int pos_B, const int pos_T, const int new_De, const int new_Para, const int new_Valor, const int new_Taxa);
     //Funcao para calcular e retornar um vector com os saldos ate o bloco B
-    std::vector<int> getBalances(int b);
+    std::vector<int> getBalances(const int b);
     //Funcoes auxiliares
     void destroyBlockchain();
 
-    private:
+private:
     //Funcao que vai chamar o metodo de ordenacao
     void orderTransactions(newTransactions *values, int num_);
     //Funcao para ordenar as transacoes com base na taxa
@@ -42,6 +44,29 @@ class Blockchain{
     Block *lastBlock; //apontador para o ultimo block
 
 
+};
+
+//Definindo o iterador da Blockchain
+class iterator{ 
+    friend class Blockchain;
+
+public:
+    //Constutor
+    iterator(Block *_thisBlock, Transaction *_thisTransaction);
+    //Pos incremento
+    iterator operator++(int);
+    //Comparador !=
+    bool operator !=(const iterator &T) const;
+    //Comparador ==
+    bool operator ==(const iterator &T) const;
+    //Operador de derreferencia
+    Transaction &operator*();
+    //Versao constante para o operador de derreferencia
+    const Transaction &operator*() const;
+    
+private:
+    Block *nowBlock;
+    Transaction *nowTransc;
 };
 
 #endif

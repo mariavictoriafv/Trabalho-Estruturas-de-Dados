@@ -22,7 +22,7 @@ void Blockchain::destroyBlockchain(){
 }
 
 //Funcao para criar um novo bloco e inserir as suas transacoes
-void Blockchain::createNewBlock(int numTransactions, int maxTransactios, int minerCode, newTransactions *infos){
+void Blockchain::createNewBlock(const int numTransactions, const int maxTransactios, const int minerCode, newTransactions *infos){
     if(numTransactions!=0 && maxTransactios!=0){
         //ordenando o vetor por meio de um merge sort recursivo, porque e um algoritmo estavel
        orderTransactions(infos, numTransactions);
@@ -170,7 +170,7 @@ void Blockchain::printBlockchain(){
     std::cout<<"\n=====================\n"; 
 }
 
-void Blockchain::changeTransaction(int pos_B, int pos_T, int new_De, int new_Para, int new_Valor, int new_Taxa){
+void Blockchain::changeTransaction(const int pos_B, const int pos_T, const int new_De, const int new_Para, const int new_Valor, const int new_Taxa){
     //Se a blockchain estiver vazio, nao alteramos nada
     if(firstBlock==nullptr) return;
     
@@ -199,7 +199,7 @@ void Blockchain::changeTransaction(int pos_B, int pos_T, int new_De, int new_Par
 }
 
 //Funcao que retorna um Vector com os saldos dos usuarios ate o bloco B
-std::vector<int> Blockchain::getBalances(int b){
+std::vector<int> Blockchain::getBalances(const int b){
 
     //Caso especial: lista vazia
     if(firstBlock==nullptr){

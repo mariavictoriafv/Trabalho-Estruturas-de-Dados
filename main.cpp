@@ -3,7 +3,8 @@
 #include "SHA256.h"
 #include "Block.h"
 #include "Blockchain.h"
-using namespace std;
+//#include "imprimeTransacoes.h"
+
 
 //sua main devera ter esse include e usar a funcao imprimeTransacoes
 //para imprimir...
@@ -11,7 +12,7 @@ using namespace std;
 //que ninguem vai modificar a funcao de impressao)
 //O include abaixo pode ser mantido comentado quando voce for enviar a primeira parte do trabalho 
 //e tambem enquanto voce nao termina a implementacao dos iteradores (caso contrario seu programa nao compilara)
-//#include "imprimeTransacoes.h"
+
 
 int main() {
 	std::string operation, type;
@@ -37,10 +38,10 @@ int main() {
 				//So vamos ler as transacoes se existirem transacoes
 					//Lendo as informacoes das transacoes
 					for(int i=0; i<num; i++){
-						cin>>list[i].de;
-						cin>>list[i].para;
-						cin>>list[i].valor;
-						cin>>list[i].taxa;
+						std::cin>>list[i].de;
+						std::cin>>list[i].para;
+						std::cin>>list[i].valor;
+						std::cin>>list[i].taxa;
 					}
 
 				//Criamos o bloco e o colocamos na Blockchain

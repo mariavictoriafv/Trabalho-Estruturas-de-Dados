@@ -7,6 +7,7 @@
 #include "SHA256.h"
 
 class Block{
+    friend class Blockchain;
 
 public:
     //construtor de Block sem proofWork
@@ -31,7 +32,6 @@ public:
     void showResult(); //funcao para imprimir o proofWork, o hash, e o hash binario
 
 private:
-    friend class Blockchain;
 
     int pos;
     int prevHash;
