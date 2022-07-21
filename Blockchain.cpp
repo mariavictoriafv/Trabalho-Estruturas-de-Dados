@@ -227,7 +227,7 @@ std::vector<int> Blockchain::getBalances(int b){
             if(copy->de>maiorCriador) maiorCriador=copy->de;
             if(copy->para>maiorCriador) maiorCriador=copy->para;
 
-            copy->nextT;
+            copy=copy->nextT;
         }
 
         aux=aux->nextBlock;
