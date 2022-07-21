@@ -2,6 +2,7 @@
 #define Blockchain_
 
 #include <iostream>
+#include <vector>
 #include "Block.h"
 
 struct newTransactions{
@@ -24,8 +25,8 @@ class Blockchain{
     void printBlockchain();
     //Funcao para alterar uma transacao
     void changeTransaction(int pos_B, int pos_T, int new_De, int new_Para, int new_Valor, int new_Taxa);
-    //Funcao para calcular e imprimir o saldo
-    void printTotal(int b);
+    //Funcao para calcular e retornar um vector com os saldos ate o bloco B
+    std::vector<int> getBalances(int b);
     //Funcoes auxiliares
     void destroyBlockchain();
 

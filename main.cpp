@@ -53,7 +53,22 @@ int main() {
 			else if(type=="imprimeSaldo"){
 				int b;
 				std::cin>>b;
-				
+				//Vector para receber o vector dos saldos
+				std::vector<int> balances;
+
+				balances=MyBlockchain.getBalances(b);
+
+				std::cout<<"=====================\n";
+
+				//Agora imprimimos os saldos de cada usuario, caso possivel
+				if(!balances.empty()){
+					std::cout<<"Saldo apos bloco "<<b<<"\n";
+
+					for(int i=0; i<balances.size(); i++)
+						std::cout<<i<<" : "<<balances[i]<<"\n";
+				}
+
+				std::cout<<"=====================\n";
 			}
 			else if(type=="alteraTransacao"){
 				int posB, posT, newD, newPara, newValor, newTaxa;

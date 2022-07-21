@@ -197,3 +197,74 @@ void Blockchain::changeTransaction(int pos_B, int pos_T, int new_De, int new_Par
     //Mineramos o bloco
     aux->mineBlock(false);
 }
+
+//Funcao que retorna um Vector com os saldos dos usuarios ate o bloco B
+std::vector<int> Blockchain::getBalances(int b){
+
+    //Caso especial: lista vazia
+    if(firstBlock==nullptr){
+        //Criamos um vector bazio e o retornamos
+        std::vector<int> empty;
+        return empty;
+    }
+
+    //Bloco auxiliar para percorrer a lista de blocos
+    Block *aux=firstBlock;
+
+    int valueBlock=256; //Esse interio guardara o valor do proximo bloco a ser minerado
+    int maiorCriador=0;
+
+    //Primeiramente, temos que saber ate qual usuario precisamos imprimir o saldo
+    //Comparamos com o criador do bloco e com os que aparecem nas transacoes
+    while(aux && aux->pos<=b){
+       //Transacao auxiliar para percorrer as transacoes dos blocos
+       Transaction *copy=aux->listaFirst;
+
+
+        if(aux->criador>maiorCriador) maiorCriador=aux->criador;
+
+        while(copy){
+            if(copy->de>maiorCriador) maiorCriador=copy->de;
+            if(copy->para>maiorCriador) maiorCriador=copy->para;
+
+            copy->nextT;
+        }
+
+        aux=aux->nextBlock;
+    }
+
+    //Vector para armazenar os saldos dos usuarios
+    //Inicialmente todos tem saldo 0
+    std::vector<int> values(maiorCriador+1, 0);
+
+    //Reinicialisando as variaveis auxiliares para percorrer as listas
+    aux=firstBlock;
+ 
+    //Agora precisamos percorrer novamente as listas
+    //Mas vamos calcular os saldos de cada usuario no processo
+    while(aux && aux->pos<=b){
+        //Transacao auxiliar para percorrer as transacoes dos blocos
+        Transaction *copy=aux->listaFirst;
+
+
+        //Atribuimos a recompensa ao criador do bloco
+        values[aux->criador]+=valueBlock;
+        //Atualizamos o valor para o proximo bloco
+        valueBlock/=2;
+
+        while(copy){
+            //Agora vamos atribuir os valores de cada usario a cada transacao
+           values[copy->para]+=copy->valor; 
+           values[aux->criador]+=copy->taxa;
+           values[copy->de]-=(copy->taxa+copy->valor);
+
+            copy=copy->nextT;
+        }
+
+        aux=aux->nextBlock;
+    }
+
+    
+    //Retornamos esses valores para serem impressos na main
+    return values;
+}
