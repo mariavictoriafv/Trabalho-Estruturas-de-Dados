@@ -1,0 +1,11 @@
+operacoes
+criarBloco 0 0 5
+criarBloco 3 2 1
+criarBloco 3 2 4
+criarBloco 1 1 1
+criarBloco 0 1 0
+criarBloco 1 1 1
+criarBloco 0 1 0
+criarBloco 0 1 0
+criarBloco 0 1 0
+imprimeSaldo 8

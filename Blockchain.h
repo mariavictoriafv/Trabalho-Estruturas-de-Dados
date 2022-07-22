@@ -28,9 +28,10 @@ public:
     ~Blockchain();
 
     //Construtor de copia
+    Blockchain(const Blockchain &_blockchain);
 
     //Operador de atrbuicao
-    
+    Blockchain &operator=(const Blockchain &);
 
     //Funcoes auxiliares
     void destroyBlockchain();

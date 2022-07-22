@@ -12,8 +12,54 @@ Blockchain::~Blockchain(){
 }
 
 //Construtor de copia
+Blockchain::Blockchain(const Blockchain &_blockchain){
+    createBlockchain();
+    *this=_blockchain;
+}
 
 //Operador de atribuicao
+Blockchain & Blockchain::operator=(const Blockchain &_blockchain){
+    //Se as listas forem iguais, apenas retornamos a lista
+    if(this==&_blockchain) return *this;
+
+    //Limpamos a lista que vai receber as informacoes
+    destroyBlockchain();
+    createBlockchain();
+
+    //Se a blockchain a ser copiada for vazia
+    //Apenas retornamos 
+    if(_blockchain.firstBlock==nullptr) return *this;
+    else{
+        //Precisamos copiar os blocos da blockchain recebida
+        //Para a blockchain atual
+        Block *aux=_blockchain.firstBlock;
+        //Esse ponteiro vai guardar o final da lista
+        //Vamos autalizando esse final ate copiar todos os blocos
+        Block *ptr_last;
+        while(aux){
+            //Caso seja o primeiro bloco da lista
+            //Atualizamos o listaFirst
+            //Como a classe block possui operador =, podemos fazer a atribuicao
+            if(this->firstBlock==nullptr){
+                this->firstBlock=aux;
+                ptr_last=firstBlock;
+            }
+            else{
+                //Adicionamos o novo bloco na lista e 
+                //Atualizamos os ponteiros
+                ptr_last->nextBlock=aux;
+                ptr_last->nextBlock->prevBlock=ptr_last;
+                ptr_last=aux;
+            } 
+
+            aux=aux->nextBlock;
+        }
+        //Atualizamos o fim da lista
+        lastBlock=ptr_last;
+    }
+
+    return *this;
+}
 
 void Blockchain::createBlockchain(){
     this->firstBlock=NULL;
