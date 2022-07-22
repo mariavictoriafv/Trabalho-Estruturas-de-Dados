@@ -5,15 +5,6 @@
 #include "Blockchain.h"
 #include "imprimeTransacoes.h"
 
-
-//sua main devera ter esse include e usar a funcao imprimeTransacoes
-//para imprimir...
-//o arquivo imprimeTransacoes.h nao precisa ser enviado (o submitty ja tem uma copia dele, para garantir
-//que ninguem vai modificar a funcao de impressao)
-//O include abaixo pode ser mantido comentado quando voce for enviar a primeira parte do trabalho 
-//e tambem enquanto voce nao termina a implementacao dos iteradores (caso contrario seu programa nao compilara)
-
-
 int main() {
 	std::string operation, type;
 
@@ -80,10 +71,6 @@ int main() {
 				imprimeTransacoes(MyBlockchain);
 			}
 		}
-		//-----------------------------
-		// Blockchain teste=MyBlockchain;
-		// std::cout<<";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
-		// teste.printBlockchain();
 	} 
 
 //Operacos da parte 1

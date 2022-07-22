@@ -48,6 +48,9 @@ public:
     
     //Funcao para calcular e retornar um vector com os saldos ate o bloco B
     std::vector<int> getBalances(const int b);
+
+    //Funcao para adicionar um bloco no fim da lista
+    void push_backB(const Block &_block);
     
     //Funcao para retornar a primeira transacao da lista
     TransactionIterator transactionBegin() const;

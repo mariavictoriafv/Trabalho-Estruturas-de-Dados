@@ -36,34 +36,55 @@ Blockchain & Blockchain::operator=(const Blockchain &_blockchain){
         //Precisamos copiar os blocos da blockchain recebida
         //Para a blockchain atual
         Block *aux=_blockchain.firstBlock;
-        //Esse ponteiro vai guardar o final da lista
-        //Vamos autalizando esse final ate copiar todos os blocos
-        Block *ptr_last;
-        while(aux){
-            //Caso seja o primeiro bloco da lista
-            //Atualizamos o listaFirst
-            //Como a classe block possui operador =, podemos fazer a atribuicao
-            if(this->firstBlock==nullptr){
-                firstBlock=aux;
-                lastBlock=aux;
-            }
-            else{
-                //Adicionamos o novo bloco na lista e 
-                //Atualizamos os ponteiros
-                *(ptr_last->nextBlock)=*(aux);
-                ptr_last->nextBlock=aux;
-                *(ptr_last->nextBlock->prevBlock)=*(ptr_last);
-                ptr_last->nextBlock->prevBlock=ptr_last;
-                ptr_last=aux;
-            } 
 
+        while(aux){
+            //Adicionamos o novo bloco na lista
+            push_backB(*aux);
+           
             aux=aux->nextBlock;
         }
-        //Atualizamos o fim da lista
-        *lastBlock=*ptr_last;
     }
 
     return *this;
+}
+
+void Blockchain::push_backB(const Block &_block){
+    //Primeiro bloco da lista
+    if(firstBlock==nullptr){
+        //Implementacao similar ao do operador = da classe Block
+        firstBlock= new Block(_block.pos, _block.prevHash, _block.criador, _block.proofWork);
+
+        if(_block.listaFirst==nullptr){ //se o bloco estiver vazio
+            firstBlock->listaFirst=nullptr;
+            firstBlock->listaLast=nullptr;
+        }
+        else{ //se nao, copiamos as informacoes e as transacoes
+            
+            Transaction *aux=_block.listaFirst;
+            while(aux!=nullptr){
+                firstBlock->addTransaction(aux->de, aux->para, aux->valor, aux->taxa);
+                aux=aux->nextT;
+            }
+    
+        }
+        lastBlock=firstBlock;  
+    }
+    else{
+        //Para os demais blocos, copiamos o bloco para o fim da lista
+        //E atualizamos os ponteiros
+        lastBlock->nextBlock= new Block(_block.pos, _block.prevHash, _block.criador, _block.proofWork);
+        
+        //copiamos as informacoes e as transacoes
+        Transaction *aux=_block.listaFirst;
+        while(aux!=nullptr){
+            lastBlock->nextBlock->addTransaction(aux->de, aux->para, aux->valor, aux->taxa);
+            aux=aux->nextT;
+        }
+
+        lastBlock->nextBlock->prevBlock=lastBlock;
+        lastBlock=lastBlock->nextBlock;
+    
+    }
 }
 
 void Blockchain::createBlockchain(){
