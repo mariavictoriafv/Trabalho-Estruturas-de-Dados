@@ -3,7 +3,7 @@
 #include "SHA256.h"
 #include "Block.h"
 #include "Blockchain.h"
-//#include "imprimeTransacoes.h"
+#include "imprimeTransacoes.h"
 
 
 //sua main devera ter esse include e usar a funcao imprimeTransacoes
@@ -75,6 +75,9 @@ int main() {
 				int posB, posT, newD, newPara, newValor, newTaxa;
 				std::cin>>posB>>posT>>newD>>newPara>>newValor>>newTaxa;
 				MyBlockchain.changeTransaction(posB, posT, newD, newPara, newValor, newTaxa);
+			}
+			else if(type=="imprimeTransacoes"){
+				imprimeTransacoes(MyBlockchain);
 			}
 		}
 	} 

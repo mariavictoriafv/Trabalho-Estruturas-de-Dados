@@ -8,6 +8,7 @@
 
 class Block{
     friend class Blockchain;
+    friend class iterator;
 
 public:
     //construtor de Block sem proofWork

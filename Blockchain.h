@@ -12,11 +12,15 @@ struct newTransactions{
       int taxa;
 };
 
+//Declarando o iterador para que ele seja reconhecido pela Blockchain
+class iterator;
 
 class Blockchain{
-    typedef iterator TransactionIterator;
+    friend class iterator;
 
 public:
+    typedef iterator TransactionIterator;
+
     //Construtor sem argumentos
     Blockchain();
     //Destrutor
@@ -31,6 +35,11 @@ public:
     std::vector<int> getBalances(const int b);
     //Funcoes auxiliares
     void destroyBlockchain();
+    void createBlockchain();
+    //Funcao para retornar a primeira transacao da lista
+    TransactionIterator transactionBegin() const;
+    //Funcao para retornar a ultima transacao da lista
+    TransactionIterator transactionEnd() const;
 
 private:
     //Funcao que vai chamar o metodo de ordenacao
@@ -46,23 +55,58 @@ private:
 
 };
 
-//Definindo o iterador da Blockchain
+//Definindo e implementando o iterador da Blockchain
 class iterator{ 
     friend class Blockchain;
 
 public:
     //Constutor
-    iterator(Block *_thisBlock, Transaction *_thisTransaction);
+    iterator(Block *_thisBlock, Transaction *_thisTransaction){
+        nowBlock=_thisBlock;
+        nowTransc=_thisTransaction;
+    }
     //Pos incremento
-    iterator operator++(int);
+    iterator operator++(int){
+        //Se houver uma proxima transacao no mesmo bloco
+        //Alteramos a transacao e retornamos o iterador 
+        if(nowTransc->nextT!=nullptr){
+            iterator aux=*this;
+            nowTransc=nowTransc->nextT;
+            return aux;
+        }
+        
+        Block *copy=nowBlock;
+
+        //Procuramos a proxima transacao na Blockchain
+        while(copy){
+            if(copy->listaFirst){
+                iterator aux=*this;
+                nowTransc=copy->listaFirst;
+                return aux;
+            }
+            copy=copy->nextBlock;
+        }
+
+        iterator it(NULL, NULL);
+
+        return it;
+    }
     //Comparador !=
-    bool operator !=(const iterator &T) const;
+    bool operator!=(const iterator &T) const{
+        return nowTransc!=T.nowTransc;
+    }
     //Comparador ==
-    bool operator ==(const iterator &T) const;
+    bool operator==(const iterator &T) const{
+        return nowTransc==T.nowTransc;
+    }
     //Operador de derreferencia
-    Transaction &operator*();
+    Transaction &operator*(){
+        return *nowTransc;
+    }
     //Versao constante para o operador de derreferencia
-    const Transaction &operator*() const;
+    const Transaction &operator*() const{
+        return *nowTransc;
+    }
     
 private:
     Block *nowBlock;

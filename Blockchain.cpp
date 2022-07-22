@@ -11,6 +11,15 @@ Blockchain::~Blockchain(){
     destroyBlockchain();
 }
 
+//Construtor de copia
+
+//Operador de atribuicao
+
+void Blockchain::createBlockchain(){
+    this->firstBlock=NULL;
+    this->lastBlock=NULL;
+}
+
 void Blockchain::destroyBlockchain(){
     Block *aux1=firstBlock;
     //Destruimos todos os blocos da lista 
@@ -264,7 +273,41 @@ std::vector<int> Blockchain::getBalances(const int b){
         aux=aux->nextBlock;
     }
 
-    
     //Retornamos esses valores para serem impressos na main
     return values;
 }
+
+Blockchain::TransactionIterator Blockchain::transactionBegin() const{
+    //Se a Blockchain estiver vazia
+    //Retornamos um iterador com informaçoes nulas
+    if(firstBlock==nullptr){
+        TransactionIterator it(NULL, NULL);
+        return it;
+    }
+
+    Block *aux=firstBlock;
+    while(aux){
+        //Vemos se algum bloco possui transacao
+        if(aux->listaFirst!=nullptr){
+        //Retornamos a transacao encontrada
+            TransactionIterator it(aux, aux->listaFirst);
+            return it;
+        }
+        
+        aux=aux->nextBlock;
+    }
+
+    TransactionIterator it(NULL, NULL);
+    return it;
+}
+
+Blockchain::TransactionIterator Blockchain::transactionEnd() const{
+    //Retornando um iterador com informacoes nulas 
+    TransactionIterator it(NULL, NULL);
+    return it;
+}
+
+
+
+
+
