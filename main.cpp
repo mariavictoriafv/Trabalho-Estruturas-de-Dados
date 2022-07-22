@@ -80,6 +80,10 @@ int main() {
 				imprimeTransacoes(MyBlockchain);
 			}
 		}
+		//-----------------------------
+		// Blockchain teste=MyBlockchain;
+		// std::cout<<";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+		// teste.printBlockchain();
 	} 
 
 //Operacos da parte 1
@@ -128,8 +132,6 @@ int main() {
 			}	
 		}
 	}
-
-
 
 	return 0;
 }

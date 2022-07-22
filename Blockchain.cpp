@@ -28,7 +28,10 @@ Blockchain & Blockchain::operator=(const Blockchain &_blockchain){
 
     //Se a blockchain a ser copiada for vazia
     //Apenas retornamos 
-    if(_blockchain.firstBlock==nullptr) return *this;
+    if(_blockchain.firstBlock==nullptr){
+        firstBlock=nullptr;
+        lastBlock=nullptr;
+    }
     else{
         //Precisamos copiar os blocos da blockchain recebida
         //Para a blockchain atual
@@ -41,13 +44,15 @@ Blockchain & Blockchain::operator=(const Blockchain &_blockchain){
             //Atualizamos o listaFirst
             //Como a classe block possui operador =, podemos fazer a atribuicao
             if(this->firstBlock==nullptr){
-                this->firstBlock=aux;
-                ptr_last=firstBlock;
+                firstBlock=aux;
+                lastBlock=aux;
             }
             else{
                 //Adicionamos o novo bloco na lista e 
                 //Atualizamos os ponteiros
+                *(ptr_last->nextBlock)=*(aux);
                 ptr_last->nextBlock=aux;
+                *(ptr_last->nextBlock->prevBlock)=*(ptr_last);
                 ptr_last->nextBlock->prevBlock=ptr_last;
                 ptr_last=aux;
             } 
@@ -55,7 +60,7 @@ Blockchain & Blockchain::operator=(const Blockchain &_blockchain){
             aux=aux->nextBlock;
         }
         //Atualizamos o fim da lista
-        lastBlock=ptr_last;
+        *lastBlock=*ptr_last;
     }
 
     return *this;
