@@ -23,21 +23,34 @@ public:
 
     //Construtor sem argumentos
     Blockchain();
+
     //Destrutor
     ~Blockchain();
-    //Funcao que cria um novo bloco
-    void createNewBlock(const int numTransactions, const int maxTransactios, const int minerCode, newTransactions *infos);
-    //Funcao para imprimir a Blockchain toda
-    void printBlockchain();
-    //Funcao para alterar uma transacao
-    void changeTransaction(const int pos_B, const int pos_T, const int new_De, const int new_Para, const int new_Valor, const int new_Taxa);
-    //Funcao para calcular e retornar um vector com os saldos ate o bloco B
-    std::vector<int> getBalances(const int b);
+
+    //Construtor de copia
+
+    //Operador de atrbuicao
+    
+
     //Funcoes auxiliares
     void destroyBlockchain();
     void createBlockchain();
+
+    //Funcao que cria um novo bloco
+    void createNewBlock(const int numTransactions, const int maxTransactios, const int minerCode, newTransactions *infos);
+    
+    //Funcao para imprimir a Blockchain toda
+    void printBlockchain();
+    
+    //Funcao para alterar uma transacao
+    void changeTransaction(const int pos_B, const int pos_T, const int new_De, const int new_Para, const int new_Valor, const int new_Taxa);
+    
+    //Funcao para calcular e retornar um vector com os saldos ate o bloco B
+    std::vector<int> getBalances(const int b);
+    
     //Funcao para retornar a primeira transacao da lista
     TransactionIterator transactionBegin() const;
+    
     //Funcao para retornar a ultima transacao da lista
     TransactionIterator transactionEnd() const;
 
@@ -65,6 +78,7 @@ public:
         nowBlock=_thisBlock;
         nowTransc=_thisTransaction;
     }
+
     //Pos incremento
     iterator operator++(int){
         //Se houver uma proxima transacao no mesmo bloco
@@ -75,34 +89,44 @@ public:
             return aux;
         }
         
-        Block *copy=nowBlock;
+        iterator it=*this; //Guardamos esse iterador para caso precisemos retorna-lo
+
+        nowBlock=nowBlock->nextBlock;
 
         //Procuramos a proxima transacao na Blockchain
-        while(copy){
-            if(copy->listaFirst){
+        while(nowBlock){
+            if(nowBlock->listaFirst){
                 iterator aux=*this;
-                nowTransc=copy->listaFirst;
+                nowTransc=nowBlock->listaFirst;
                 return aux;
             }
-            copy=copy->nextBlock;
+            nowBlock=nowBlock->nextBlock;
         }
 
-        iterator it(NULL, NULL);
+
+        //Caso nao haja nenhuma proxima transacao na Blockchain,
+        //retornamos as informacoes antigas, armazenadas em it
+        //Atualizamos a transacao apontada pelo iterador para nulo
+        nowTransc=nullptr;
 
         return it;
     }
+
     //Comparador !=
     bool operator!=(const iterator &T) const{
-        return nowTransc!=T.nowTransc;
+        return (nowTransc!=T.nowTransc);
     }
+
     //Comparador ==
     bool operator==(const iterator &T) const{
-        return nowTransc==T.nowTransc;
+        return (nowTransc==T.nowTransc);
     }
+
     //Operador de derreferencia
     Transaction &operator*(){
         return *nowTransc;
     }
+
     //Versao constante para o operador de derreferencia
     const Transaction &operator*() const{
         return *nowTransc;

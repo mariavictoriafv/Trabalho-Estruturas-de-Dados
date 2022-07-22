@@ -297,6 +297,8 @@ Blockchain::TransactionIterator Blockchain::transactionBegin() const{
         aux=aux->nextBlock;
     }
 
+    //Caso nao haja nenhuma transacao na Blockchain, retornamos 
+    //Um iterador que aponta para nulo
     TransactionIterator it(NULL, NULL);
     return it;
 }
