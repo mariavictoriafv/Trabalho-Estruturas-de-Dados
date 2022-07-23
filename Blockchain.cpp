@@ -259,9 +259,10 @@ void Blockchain::changeTransaction(const int pos_B, const int pos_T, const int n
     Block *aux=firstBlock;
 
     //Procuramos o bloco onde esta a transacao
-    while(aux->pos!=pos_B) aux=aux->nextBlock;
+    while(aux && aux->pos!=pos_B) aux=aux->nextBlock;
 
-    //Se o bloco estiver vazio, nao alteramos nada
+    //Se o bloco estiver vazio, ou nao houver bloco, nao alteramos nada
+    if(!aux) return;
     if(aux->listaFirst==nullptr) return;
 
     //Agora devemos encontrar a transacao que precisa ser mudada

@@ -85,6 +85,9 @@ public:
 
     //Pos incremento
     iterator operator++(int){
+        //Testamos se o iterador ja nao aponta para nulo
+        if(!nowTransc) return *this;
+
         //Se houver uma proxima transacao no mesmo bloco
         //Alteramos a transacao e retornamos o iterador 
         if(nowTransc->nextT!=nullptr){
@@ -93,16 +96,15 @@ public:
             return aux;
         }
         
-        iterator it=*this; //Guardamos esse iterador para caso precisemos retorna-lo
+        iterator it=*this; //Guardamos esse iterador para retorna-lo
 
         nowBlock=nowBlock->nextBlock;
 
         //Procuramos a proxima transacao na Blockchain
         while(nowBlock){
             if(nowBlock->listaFirst){
-                iterator aux=*this;
                 nowTransc=nowBlock->listaFirst;
-                return aux;
+                return it;
             }
             nowBlock=nowBlock->nextBlock;
         }
