@@ -182,7 +182,7 @@ void Block::mineBlock(bool print){
     }
 }
 
-int Block::transactionSize(){
+int Block::transactionSize() const{
     int c=0;
     Transaction *aux;
     aux=listaFirst;
@@ -196,7 +196,7 @@ int Block::transactionSize(){
     return c;
 }
 
-void Block::showValues(){
+void Block::showValues() const{
     //mostrando as informacoes e transacoes na tela
     std::cout<<pos<<" ";
     std::cout<<prevHash<<" ";

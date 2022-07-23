@@ -7,7 +7,7 @@
 class Transaction{
 
 public:
-    void imprime(){
+    void imprime() const{
         std::cout<<de<<" -> "<<para<<" (valor: "<<valor<<" , taxa: "<<taxa<<")\n";
     }
 
