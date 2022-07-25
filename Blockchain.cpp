@@ -268,16 +268,22 @@ void Blockchain::changeTransaction(const int pos_B, const int pos_T, const int n
     //Agora devemos encontrar a transacao que precisa ser mudada
     Transaction *copy=aux->listaFirst;
 
-    for(int c=1; c<pos_T; c++) copy=copy->nextT;
+    for(int c=1; c<pos_T; c++){
+        if(copy)
+            copy=copy->nextT; 
+    } 
 
     //Alteramos as informacoes
-    copy->de=new_De;
-    copy->para=new_Para;
-    copy->valor=new_Valor;
-    copy->taxa=new_Taxa;
+    if(copy){
+        copy->de=new_De;
+        copy->para=new_Para;
+        copy->valor=new_Valor;
+        copy->taxa=new_Taxa;
 
-    //Mineramos o bloco
-    aux->mineBlock(false);
+        //Mineramos o bloco
+        aux->mineBlock(false);
+    }
+
 }
 
 //Funcao que retorna um Vector com os saldos dos usuarios ate o bloco B
